@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بيت المال - BET ELMAL | US GLOBAL</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandBlue: '#0F2942',
+            brandGold: '#D4AF37',
+            brandGoldLight: '#F3E5AB',
+            brandOrange: '#FF6B00'
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Cairo', sans-serif; background-color: #F8FAFC; }
+    .gold-gradient { background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%); }
+    .navy-gradient { background: linear-gradient(135deg, #0F2942 0%, #1A3E61 100%); }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- HEADER / BRANDING -->
+  <header class="navy-gradient text-white shadow-xl border-b-4 border-brandGold">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <!-- LOGO & BRANDING SECTION -->
+      <div class="flex items-center gap-5">
+        <!-- Circular Gold/Navy Logo Frame -->
+        <div class="relative w-24 h-24 rounded-full border-2 border-brandGold p-1 shadow-2xl flex items-center justify-center bg-[#0C2338]">
+          <div class="w-full h-full rounded-full border border-brandGold/40 flex flex-col items-center justify-center text-center p-1 bg-[#0F2942]">
+            <!-- Graphic Icon (House + Arrow) -->
+            <div class="relative text-brandGold mb-0.5">
+              <i class="fa-solid fa-house-trend-up text-2xl"></i>
+            </div>
+            <!-- Arabic Text -->
+            <div class="text-[13px] font-extrabold text-brandGold tracking-tight leading-none mb-0.5">بيت المال</div>
+            <!-- English Text -->
+            <div class="text-[8px] font-bold text-brandGold/90 tracking-widest leading-none">BET ELMAL</div>
+          </div>
+        </div>
+
+        <!-- Title & Subtitle -->
+        <div>
+          <!-- US GLOBAL Badge -->
+          <div class="inline-block bg-brandOrange text-white text-xs font-black px-2.5 py-0.5 rounded shadow mb-1">
+            US GLOBAL
+          </div>
+          <h1 class="text-2xl md:text-3xl font-bold tracking-wide text-white">
+            شركة بيت المال <span class="text-brandGold font-extrabold">للإستشارات المالية</span>
+          </h1>
+          <p class="text-slate-300 text-sm mt-0.5 flex items-center gap-2">
+            <i class="fa-solid fa-user-tie text-brandGold"></i>
+            إشراف: دكتور هشام العطار - دكتوراة بالإدارة المالية
+          </p>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="flex flex-wrap items-center gap-3">
+        <button onclick="openModal('sales')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-lg shadow-md transition flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-cash-register"></i>
+          تسجيل المبيعات اليومية
+        </button>
+        <button onclick="openModal('purchases')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-lg shadow-md transition flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-cart-plus"></i>
+          تسجيل المشتريات
+        </button>
+        <button onclick="openModal('expenses')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2.5 rounded-lg shadow-md transition flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-receipt"></i>
+          تسجيل المصروفات
+        </button>
+        <button onclick="openModal('reports')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2.5 rounded-lg shadow-md transition flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-chart-pie"></i>
+          مقارنة الشهر والأرباح
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+    
+    <!-- DASHBOARD STATS SUMMARY -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white p-5 rounded-xl shadow border-r-4 border-emerald-500 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">إجمالي مبيعات اليوم</p>
+          <h3 id="stat-sales" class="text-xl font-black text-slate-800 mt-1">0.00 ج.م</h3>
+        </div>
+        <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xl">
+          <i class="fa-solid fa-coins"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow border-r-4 border-blue-500 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">إجمالي مشتريات اليوم</p>
+          <h3 id="stat-purchases" class="text-xl font-black text-slate-800 mt-1">0.00 ج.م</h3>
+        </div>
+        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-xl">
+          <i class="fa-solid fa-boxes-packing"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow border-r-4 border-amber-500 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">إجمالي مصروفات اليوم</p>
+          <h3 id="stat-expenses" class="text-xl font-black text-slate-800 mt-1">0.00 ج.م</h3>
+        </div>
+        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-xl">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow border-r-4 border-purple-500 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">صافي الحركة اليومية</p>
+          <h3 id="stat-net" class="text-xl font-black text-slate-800 mt-1">0.00 ج.م</h3>
+        </div>
+        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-xl">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN TWO-COLUMN LAYOUT -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- RIGHT COLUMN: PURCHASES & EXPENSES -->
+      <div class="space-y-8">
+        
+        <!-- PURCHASES SECTION -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+          <div class="bg-slate-800 text-white px-5 py-4 flex items-center justify-between">
+            <h2 class="font-bold flex items-center gap-2">
+              <i class="fa-solid fa-cart-shopping text-brandGold"></i>
+              سجل المشتريات
+            </h2>
+            <button onclick="openModal('purchases')" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded transition">
+              + إضافة مشتريات
+            </button>
+          </div>
+          <div class="p-4 overflow-x-auto">
+            <table class="w-full text-sm text-right text-slate-600">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-bold">
+                <tr>
+                  <th class="p-3">التاريخ</th>
+                  <th class="p-3">الصنف</th>
+                  <th class="p-3">الكمية</th>
+                  <th class="p-3">الإجمالي</th>
+                  <th class="p-3">طريقة الدفع / المورد</th>
+                  <th class="p-3">المستند</th>
+                  <th class="p-3">إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="purchases-table-body" class="divide-y divide-slate-100">
+                <!-- Data populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- EXPENSES SECTION -->
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+          <div class="bg-slate-800 text-white px-5 py-4 flex items-center justify-between">
+            <h2 class="font-bold flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice-dollar text-brandGold"></i>
+              سجل المصروفات
+            </h2>
+            <button onclick="openModal('expenses')" class="text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold px-3 py-1.5 rounded transition">
+              + إضافة مصروف
+            </button>
+          </div>
+          <div class="p-4 overflow-x-auto">
+            <table class="w-full text-sm text-right text-slate-600">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-bold">
+                <tr>
+                  <th class="p-3">التاريخ</th>
+                  <th class="p-3">نوع المصروف</th>
+                  <th class="p-3">المبلغ</th>
+                  <th class="p-3">طريقة الدفع</th>
+                  <th class="p-3">المستند</th>
+                  <th class="p-3">إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="expenses-table-body" class="divide-y divide-slate-100">
+                <!-- Data populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- LEFT COLUMN: DAILY SALES & CASH DRAWER -->
+      <div>
+        <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+          <div class="bg-slate-800 text-white px-5 py-4 flex items-center justify-between">
+            <h2 class="font-bold flex items-center gap-2">
+              <i class="fa-solid fa-vault text-brandGold"></i>
+              سجل المبيعات اليومية وتصفية الدرج
+            </h2>
+            <button onclick="openModal('sales')" class="text-xs bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 py-1.5 rounded transition">
+              + تسجيل تقفيل يومي
+            </button>
+          </div>
+          <div class="p-4 overflow-x-auto">
+            <table class="w-full text-sm text-right text-slate-600">
+              <thead class="bg-slate-100 text-slate-700 text-xs uppercase font-bold">
+                <tr>
+                  <th class="p-3">التاريخ</th>
+                  <th class="p-3">الكاش</th>
+                  <th class="p-3">أنستا باي/فيزا</th>
+                  <th class="p-3">عجز/زيادة</th>
+                  <th class="p-3">إجمالي الإيرادات</th>
+                  <th class="p-3">المستند</th>
+                  <th class="p-3">إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="sales-table-body" class="divide-y divide-slate-100">
+                <!-- Data populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODALS SECTION -->
+  
+  <!-- 1. SALES MODAL -->
+  <div id="modal-sales" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+      <div class="bg-blue-600 text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="font-bold text-lg"><i class="fa-solid fa-cash-register ml-2"></i>تسجيل المبيعات اليومية</h3>
+        <button onclick="closeModal('sales')" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="handleSalesSubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">تاريخ اليوم</label>
+          <input type="date" id="sales-date" required class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">المبيعات الكاش (نقدي)</label>
+            <input type="number" step="0.01" id="sales-cash" value="0" oninput="calcSalesTotal()" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">أنستا باي / فيزا</label>
+            <input type="number" step="0.01" id="sales-instapay" value="0" oninput="calcSalesTotal()" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">عجز / زيادة الدرج (سالب للعجز / موجب للزيادة)</label>
+          <input type="number" step="0.01" id="sales-diff" value="0" oninput="calcSalesTotal()" placeholder="مثال: -50 أو 50" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+          <span class="text-xs font-bold text-slate-500 block">إجمالي الإيرادات اليومية:</span>
+          <span id="sales-calculated-total" class="text-xl font-extrabold text-blue-600">0.00 ج.م</span>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">إرفاق مستند / تقرير الدرج</label>
+          <input type="file" id="sales-file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="closeModal('sales')" class="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50">إلغاء</button>
+          <button type="submit" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold">حفظ المبيعات</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. PURCHASES MODAL -->
+  <div id="modal-purchases" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+      <div class="bg-emerald-600 text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-plus ml-2"></i>تسجيل المشتريات</h3>
+        <button onclick="closeModal('purchases')" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="handlePurchasesSubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">تاريخ الشراء</label>
+          <input type="date" id="purchase-date" required class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">اسم الصنف / البيان</label>
+          <input type="text" id="purchase-item" required placeholder="مثال: مستلزمات تشغيل" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">الكمية</label>
+            <input type="number" id="purchase-qty" value="1" min="1" oninput="calcPurchaseTotal()" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">سعر الوحدة</label>
+            <input type="number" step="0.01" id="purchase-price" value="0" oninput="calcPurchaseTotal()" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+          </div>
+        </div>
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+          <span class="text-xs font-bold text-slate-500 block">الإجمالي:</span>
+          <span id="purchase-calculated-total" class="text-xl font-extrabold text-emerald-600">0.00 ج.م</span>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">طريقة الدفع</label>
+          <select id="purchase-payment" onchange="toggleSupplierField()" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+            <option value="كاش">كاش (نقداً)</option>
+            <option value="إنستا باي / فيزا">إنستا باي / فيزا</option>
+            <option value="حساب الموردين">حساب الموردين</option>
+          </select>
+        </div>
+        <div id="supplier-name-container" class="hidden">
+          <label class="block text-xs font-bold text-slate-600 mb-1">اسم المورد</label>
+          <input type="text" id="purchase-supplier" placeholder="أدخل اسم المورد" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">إرفاق صورة الفاتورة / المستند</label>
+          <input type="file" id="purchase-file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="closeModal('purchases')" class="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50">إلغاء</button>
+          <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold">حفظ الشراء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. EXPENSES MODAL -->
+  <div id="modal-expenses" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+      <div class="bg-amber-600 text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="font-bold text-lg"><i class="fa-solid fa-receipt ml-2"></i>تسجيل المصروفات</h3>
+        <button onclick="closeModal('expenses')" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="handleExpensesSubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">تاريخ المصروف</label>
+          <input type="date" id="expense-date" required class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">نوع المصروف</label>
+          <select id="expense-type" onchange="toggleCustomExpenseField()" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+            <option value="إيجار">إيجار</option>
+            <option value="كهرباء">كهرباء</option>
+            <option value="مياه">مياه</option>
+            <option value="مرتبات">مرتبات</option>
+            <option value="مصروفات أخرى">مصروفات أخرى</option>
+          </select>
+        </div>
+        <div id="custom-expense-container" class="hidden">
+          <label class="block text-xs font-bold text-slate-600 mb-1">حدد نوع المصروف الآخر</label>
+          <input type="text" id="expense-custom" placeholder="مثال: صيانة، مصاريف شحن..." class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">المبلغ</label>
+          <input type="number" step="0.01" id="expense-amount" required class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">طريقة الدفع</label>
+          <select id="expense-payment" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500">
+            <option value="كاش">كاش (نقداً)</option>
+            <option value="إنستا باي / فيزا">إنستا باي / فيزا</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">إرفاق صورة الإيصال / المستند</label>
+          <input type="file" id="expense-file" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100">
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="closeModal('expenses')" class="px-4 py-2 border rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50">إلغاء</button>
+          <button type="submit" class="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold">حفظ المصروف</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. REPORTS / MONTHLY COMPARISON MODAL -->
+  <div id="modal-reports" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full overflow-hidden max-h-[90vh] flex flex-col">
+      <div class="bg-purple-600 text-white px-6 py-4 flex items-center justify-between">
+        <h3 class="font-bold text-lg"><i class="fa-solid fa-chart-pie ml-2"></i>مقارنة الشهر والأرباح الشهري</h3>
+        <button onclick="closeModal('reports')" class="text-white/80 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-6">
+        
+        <!-- MONTH FILTER -->
+        <div class="flex items-center gap-4 bg-purple-50 p-4 rounded-xl border border-purple-100">
+          <label class="text-xs font-bold text-purple-900">اختر الشهر للمقارنة:</label>
+          <input type="month" id="report-month" onchange="generateReport()" class="border rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-purple-500">
+        </div>
+
+        <!-- REPORT SUMMARY CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center">
+            <span class="text-xs font-bold text-emerald-700 block">إجمالي الإيرادات (المبيعات)</span>
+            <span id="report-total-sales" class="text-xl font-black text-emerald-600 block mt-1">0.00 ج.م</span>
+          </div>
+          <div class="bg-red-50 p-4 rounded-xl border border-red-200 text-center">
+            <span class="text-xs font-bold text-red-700 block">إجمالي التكاليف والمصروفات</span>
+            <span id="report-total-costs" class="text-xl font-black text-red-600 block mt-1">0.00 ج.م</span>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-xl border border-purple-200 text-center">
+            <span class="text-xs font-bold text-purple-700 block">صافي الربح الشهري</span>
+            <span id="report-net-profit" class="text-xl font-black text-purple-600 block mt-1">0.00 ج.م</span>
+          </div>
+        </div>
+
+        <!-- CHART CONTAINER -->
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <h4 class="text-xs font-bold text-slate-600 mb-3 text-center">مقارنة الإيرادات مقابل التكاليف</h4>
+          <div class="h-64">
+            <canvas id="profitChart"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE PREVIEW MODAL -->
+  <div id="modal-img" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full p-4 relative">
+      <button onclick="closeModal('img')" class="absolute top-2 right-2 text-slate-500 hover:text-slate-800 text-2xl"><i class="fa-solid fa-circle-xmark"></i></button>
+      <img id="preview-img-target" src="" alt="المستند المرفق" class="max-h-[70vh] w-auto mx-auto rounded">
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-800 text-slate-400 text-xs text-center py-4 border-t border-slate-700">
+    <p>جميع الحقوق محفوظة &copy; 2026 - شركة بيت المال للإستشارات المالية (دكتور هشام العطار)</p>
+  </footer>
+
+  <!-- APPLICATION LOGIC & DATA HANDLING -->
+  <script>
+    // LocalStorage Keys
+    const STORAGE_KEY_SALES = 'beit_elmal_sales';
+    const STORAGE_KEY_PURCHASES = 'beit_elmal_purchases';
+    const STORAGE_KEY_EXPENSES = 'beit_elmal_expenses';
+
+    let salesData = JSON.parse(localStorage.getItem(STORAGE_KEY_SALES)) || [];
+    let purchasesData = JSON.parse(localStorage.getItem(STORAGE_KEY_PURCHASES)) || [];
+    let expensesData = JSON.parse(localStorage.getItem(STORAGE_KEY_EXPENSES)) || [];
+    let chartInstance = null;
+
+    // INIT PAGE
+    window.onload = function() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('sales-date').value = today;
+      document.getElementById('purchase-date').value = today;
+      document.getElementById('expense-date').value = today;
+      
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      document.getElementById('report-month').value = currentMonth;
+
+      renderAllTables();
+      updateDashboardStats();
+    };
+
+    function openModal(id) {
+      document.getElementById('modal-' + id).classList.remove('hidden');
+      if (id === 'reports') generateReport();
+    }
+
+    function closeModal(id) {
+      document.getElementById('modal-' + id).classList.add('hidden');
+    }
+
+    function toggleSupplierField() {
+      const val = document.getElementById('purchase-payment').value;
+      const container = document.getElementById('supplier-name-container');
+      if (val === 'حساب الموردين') {
+        container.classList.remove('hidden');
+      } else {
+        container.classList.add('hidden');
+      }
+    }
+
+    function toggleCustomExpenseField() {
+      const val = document.getElementById('expense-type').value;
+      const container = document.getElementById('custom-expense-container');
+      if (val === 'مصروفات أخرى') {
+        container.classList.remove('hidden');
+      } else {
+        container.classList.add('hidden');
+      }
+    }
+
+    function calcSalesTotal() {
+      const cash = parseFloat(document.getElementById('sales-cash').value) || 0;
+      const instapay = parseFloat(document.getElementById('sales-instapay').value) || 0;
+      const diff = parseFloat(document.getElementById('sales-diff').value) || 0;
+      const total = cash + instapay + diff;
+      document.getElementById('sales-calculated-total').innerText = total.toFixed(2) + ' ج.م';
+      return total;
+    }
+
+    function calcPurchaseTotal() {
+      const qty = parseFloat(document.getElementById('purchase-qty').value) || 0;
+      const price = parseFloat(document.getElementById('purchase-price').value) || 0;
+      const total = qty * price;
+      document.getElementById('purchase-calculated-total').innerText = total.toFixed(2) + ' ج.م';
+      return total;
+    }
+
+    // Helper to read file to Base64
+    function readFileAsBase64(fileInput) {
+      return new Promise((resolve) => {
+        if (!fileInput.files || !fileInput.files[0]) resolve(null);
+        else {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      });
+    }
+
+    // HANDLERS
+    async function handleSalesSubmit(e) {
+      e.preventDefault();
+      const date = document.getElementById('sales-date').value;
+      const cash = parseFloat(document.getElementById('sales-cash').value) || 0;
+      const instapay = parseFloat(document.getElementById('sales-instapay').value) || 0;
+      const diff = parseFloat(document.getElementById('sales-diff').value) || 0;
+      const total = cash + instapay + diff;
+      const fileData = await readFileAsBase64(document.getElementById('sales-file'));
+
+      salesData.push({ id: Date.now(), date, cash, instapay, diff, total, img: fileData });
+      localStorage.setItem(STORAGE_KEY_SALES, JSON.stringify(salesData));
+
+      closeModal('sales');
+      renderAllTables();
+      updateDashboardStats();
+    }
+
+    async function handlePurchasesSubmit(e) {
+      e.preventDefault();
+      const date = document.getElementById('purchase-date').value;
+      const item = document.getElementById('purchase-item').value;
+      const qty = parseFloat(document.getElementById('purchase-qty').value) || 1;
+      const price = parseFloat(document.getElementById('purchase-price').value) || 0;
+      const total = qty * price;
+      const payment = document.getElementById('purchase-payment').value;
+      const supplier = payment === 'حساب الموردين' ? document.getElementById('purchase-supplier').value : '';
+      const fileData = await readFileAsBase64(document.getElementById('purchase-file'));
+
+      purchasesData.push({ id: Date.now(), date, item, qty, price, total, payment, supplier, img: fileData });
+      localStorage.setItem(STORAGE_KEY_PURCHASES, JSON.stringify(purchasesData));
+
+      closeModal('purchases');
+      renderAllTables();
+      updateDashboardStats();
+    }
+
+    async function handleExpensesSubmit(e) {
+      e.preventDefault();
+      const date = document.getElementById('expense-date').value;
+      let type = document.getElementById('expense-type').value;
+      if (type === 'مصروفات أخرى') {
+        const custom = document.getElementById('expense-custom').value;
+        if (custom) type = 'مصروفات أخرى (' + custom + ')';
+      }
+      const amount = parseFloat(document.getElementById('expense-amount').value) || 0;
+      const payment = document.getElementById('expense-payment').value;
+      const fileData = await readFileAsBase64(document.getElementById('expense-file'));
+
+      expensesData.push({ id: Date.now(), date, type, amount, payment, img: fileData });
+      localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(expensesData));
+
+      closeModal('expenses');
+      renderAllTables();
+      updateDashboardStats();
+    }
+
+    function viewImg(src) {
+      document.getElementById('preview-img-target').src = src;
+      openModal('img');
+    }
+
+    function deleteEntry(type, id) {
+      if (!confirm('هل أنت تأكد من حذف هذا السجل؟')) return;
+      if (type === 'sales') {
+        salesData = salesData.filter(i => i.id !== id);
+        localStorage.setItem(STORAGE_KEY_SALES, JSON.stringify(salesData));
+      } else if (type === 'purchases') {
+        purchasesData = purchasesData.filter(i => i.id !== id);
+        localStorage.setItem(STORAGE_KEY_PURCHASES, JSON.stringify(purchasesData));
+      } else if (type === 'expenses') {
+        expensesData = expensesData.filter(i => i.id !== id);
+        localStorage.setItem(STORAGE_KEY_EXPENSES, JSON.stringify(expensesData));
+      }
+      renderAllTables();
+      updateDashboardStats();
+    }
+
+    function renderAllTables() {
+      // Sales
+      const salesBody = document.getElementById('sales-table-body');
+      salesBody.innerHTML = salesData.map(s => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3">${s.date}</td>
+          <td class="p-3">${s.cash.toFixed(2)}</td>
+          <td class="p-3">${s.instapay.toFixed(2)}</td>
+          <td class="p-3 ${s.diff < 0 ? 'text-red-600 font-bold' : s.diff > 0 ? 'text-emerald-600 font-bold' : ''}">${s.diff.toFixed(2)}</td>
+          <td class="p-3 font-bold text-blue-600">${s.total.toFixed(2)} ج.م</td>
+          <td class="p-3">${s.img ? `<button onclick="viewImg('${s.img}')" class="text-blue-600 hover:text-blue-800 text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-paperclip"></i> عرض</button>` : '-'}</td>
+          <td class="p-3"><button onclick="deleteEntry('sales', ${s.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد بيانات مسجلة</td></tr>';
+
+      // Purchases
+      const purchasesBody = document.getElementById('purchases-table-body');
+      purchasesBody.innerHTML = purchasesData.map(p => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3">${p.date}</td>
+          <td class="p-3 font-semibold">${p.item}</td>
+          <td class="p-3">${p.qty}</td>
+          <td class="p-3 font-bold text-emerald-600">${p.total.toFixed(2)} ج.م</td>
+          <td class="p-3 text-xs">${p.payment} ${p.supplier ? `(${p.supplier})` : ''}</td>
+          <td class="p-3">${p.img ? `<button onclick="viewImg('${p.img}')" class="text-blue-600 hover:text-blue-800 text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-paperclip"></i> عرض</button>` : '-'}</td>
+          <td class="p-3"><button onclick="deleteEntry('purchases', ${p.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" class="p-4 text-center text-slate-400">لا توجد بيانات مسجلة</td></tr>';
+
+      // Expenses
+      const expensesBody = document.getElementById('expenses-table-body');
+      expensesBody.innerHTML = expensesData.map(e => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3">${e.date}</td>
+          <td class="p-3 font-semibold">${e.type}</td>
+          <td class="p-3 font-bold text-amber-600">${e.amount.toFixed(2)} ج.م</td>
+          <td class="p-3 text-xs">${e.payment}</td>
+          <td class="p-3">${e.img ? `<button onclick="viewImg('${e.img}')" class="text-blue-600 hover:text-blue-800 text-xs font-bold flex items-center gap-1"><i class="fa-solid fa-paperclip"></i> عرض</button>` : '-'}</td>
+          <td class="p-3"><button onclick="deleteEntry('expenses', ${e.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+      `).join('') || '<tr><td colspan="6" class="p-4 text-center text-slate-400">لا توجد بيانات مسجلة</td></tr>';
+    }
+
+    function updateDashboardStats() {
+      const today = new Date().toISOString().split('T')[0];
+      
+      const todaySales = salesData.filter(s => s.date === today).reduce((acc, curr) => acc + curr.total, 0);
+      const todayPurchases = purchasesData.filter(p => p.date === today).reduce((acc, curr) => acc + curr.total, 0);
+      const todayExpenses = expensesData.filter(e => e.date === today).reduce((acc, curr) => acc + curr.amount, 0);
+      const todayNet = todaySales - (todayPurchases + todayExpenses);
+
+      document.getElementById('stat-sales').innerText = todaySales.toFixed(2) + ' ج.م';
+      document.getElementById('stat-purchases').innerText = todayPurchases.toFixed(2) + ' ج.م';
+      document.getElementById('stat-expenses').innerText = todayExpenses.toFixed(2) + ' ج.م';
+      document.getElementById('stat-net').innerText = todayNet.toFixed(2) + ' ج.م';
+    }
+
+    function generateReport() {
+      const month = document.getElementById('report-month').value;
+      if (!month) return;
+
+      const mSales = salesData.filter(s => s.date.startsWith(month)).reduce((acc, curr) => acc + curr.total, 0);
+      const mPurchases = purchasesData.filter(p => p.date.startsWith(month)).reduce((acc, curr) => acc + curr.total, 0);
+      const mExpenses = expensesData.filter(e => e.date.startsWith(month)).reduce((acc, curr) => acc + curr.amount, 0);
+      const mTotalCosts = mPurchases + mExpenses;
+      const mNetProfit = mSales - mTotalCosts;
+
+      document.getElementById('report-total-sales').innerText = mSales.toFixed(2) + ' ج.م';
+      document.getElementById('report-total-costs').innerText = mTotalCosts.toFixed(2) + ' ج.م';
+      document.getElementById('report-net-profit').innerText = mNetProfit.toFixed(2) + ' ج.م';
+
+      // Render Chart
+      const ctx = document.getElementById('profitChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['الإيرادات (المبيعات)', 'التكاليف والمصروفات', 'صافي الربح'],
+          datasets: [{
+            label: 'القيمة بالجنية',
+            data: [mSales, mTotalCosts, mNetProfit],
+            backgroundColor: ['#10B981', '#EF4444', '#8B5CF6']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
